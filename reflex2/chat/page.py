@@ -34,9 +34,24 @@ def chat_page() -> rx.Component:
     return ui.base_layout(
         rx.vstack(
             rx.heading("Chat", size="9"),
-            rx.box(
-                rx.foreach(ChatState.messages, message_box),
-                width="100%"
+            # rx.box(
+            #     rx.foreach(ChatState.messages, message_box),
+            #     width="100%"
+            # ),
+            # 使用 scroll_area 包覆訊息列表
+            rx.scroll_area(
+                rx.vstack(
+                    rx.foreach(ChatState.messages, message_box),
+                    # 埋入隱形的錨點 (Anchor)
+                    rx.box(id="chat_bottom"),
+                    width="100%",
+                    spacing="4",
+                ),
+                # 限制高度，內容超過時才會出現捲軸
+                # 這裡設為視窗高度的 65%
+                h="65vh",
+                width="100%",
+                scrollbars="vertical",
             ),
             chat_form(),
             margin="3rem auto",
